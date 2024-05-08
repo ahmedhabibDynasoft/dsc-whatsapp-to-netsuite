@@ -11,10 +11,9 @@ router.get('/', async (req, res) => {
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/111.0.0.0 Safari/537.36'
       }
     })
-    const data = await response.json();
-    console.log('GET => ', data);
+    console.log('GET => ', response);
 
-    res.status(200).json({ success: true, data: data })
+    res.status(200).json({ success: true, data: response })
   }
   catch (err) {
     console.log(err);
@@ -33,9 +32,8 @@ router.post('/', async (req, res) => {
       body: req.body
     })
 
-    const data = await response.json();
-    console.log('POST => ', data);
-    res.status(200).json({ success: true, data: data })
+    console.log('POST => ', response);
+    res.status(200).json({ success: true, data: response })
   }
   catch (err) {
     console.log(err);
