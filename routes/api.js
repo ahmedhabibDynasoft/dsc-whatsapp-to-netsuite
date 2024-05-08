@@ -13,10 +13,10 @@ router.get('/', async (req, res) => {
     })
     console.log('GET => ', response);
 
-    res.status(200).json({ success: true, data: response })
+    res.status(200).send(req.params['hub.challenge'])
   }
   catch (err) {
-    console.log(err);
+    console.log('GET Err=> ',err);
     res.status(405).json({ success: false, reason: err })
   }
 });
@@ -36,7 +36,7 @@ router.post('/', async (req, res) => {
     res.status(200).json({ success: true, data: response })
   }
   catch (err) {
-    console.log(err);
+    console.log('POST Err=> ',err);
     res.status(405).json({ success: false, reason: err })
   }
 });
