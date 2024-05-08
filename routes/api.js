@@ -6,10 +6,10 @@ router.get('/', async (req, res) => {
   try {
     
     console.log('GET => ', req.params);
-    console.log('GET => query ', req.getParameter('hub.challenge'));
+    console.log('GET => query ', req.query);
     console.log('GET => header ', req.headers);
 
-    res.status(200).send(req.getParameter('hub.challenge'))
+    res.status(200).send(req.query['hub.challenge'])
   }
   catch (err) {
     console.log('GET Err=> ',err);
