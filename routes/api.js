@@ -83,8 +83,8 @@ router.post('/', async (req, res) => {
 
     // console.log('data => ', data);
 
-    console.log('body', req.body);
-    res.status(200).json({ success: true, data: data })
+    console.log('body', JSON.stringify(req.body));
+    res.status(200).json({ success: true })
   }
   catch (err) {
     console.log('POST Err=> ', err);
