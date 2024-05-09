@@ -1,6 +1,6 @@
 var CryptoJS = require("crypto-js");
 
-const createOAuthRequest = (method) => {
+const createOAuthRequest = async (method, data ) => {
     const consumerKey = process.env.CONSUMER_KEY; // Client ID
     const consumerSecret = process.env.CONSUMER_SECRET; // Client Secret
     const tokenId = process.env.TOKEN_ID;
@@ -27,7 +27,7 @@ const createOAuthRequest = (method) => {
 
     const requestData = {
         url: restletUrl,
-        method: method,
+        method: method
     }
 
     const authHeader = oauth.toHeader(oauth.authorize(requestData, token));
@@ -40,8 +40,11 @@ const createOAuthRequest = (method) => {
     const options = {
         headers: headers,
         method: method,
-        url: restletUrl
+        url: restletUrl,
+        data: data
     };
+
+    return options;
 }
 
 
