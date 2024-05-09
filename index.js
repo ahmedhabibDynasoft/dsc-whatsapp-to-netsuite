@@ -1,6 +1,8 @@
 const express = require('express')
 const api = require('./routes/api')
 const app = express()
+require('dotenv').config()
+
 const port = process.env.Port || 3000
 app.use(express.json());
 
