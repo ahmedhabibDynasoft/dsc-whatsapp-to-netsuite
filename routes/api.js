@@ -2,6 +2,9 @@ const express = require("express");
 const router = express.Router();
 const fetch = require('node-fetch');
 const { createOauthToken } = require("../util/auth.netsuite");
+const OAuth = require('oauth-1.0a');
+const crypto = require('crypto-js');
+const axios = require('axios');
 
 router.get('/', async (req, res) => {
   try {
@@ -19,39 +22,58 @@ router.get('/', async (req, res) => {
 });
 
 router.get('/test', async (req, res) => {
-  const authHeader = createOauthToken();
-  let url = process.env.RESTLET_URL;
+  const consumerKey = process.env.CONSUMER_KEY; // Client ID
+  const consumerSecret = process.env.CONSUMER_SECRET; // Client Secret
+  const tokenId = process.env.TOKEN_ID;
+  const tokenSecret = process.env.TOKEN_SECRET;
+  const restletUrl = process.env.RESTLET_URL;
+  const accountId = process.env.ACCOUNT; // Realm
 
-  const headers = new Headers({'Content-Length': 0, });
-  headers.append('Content-Type', 'application/json');
-  headers.append('Authorization', authHeader);
+  const oauth = OAuth({
+    consumer: {
+      key: consumerKey,
+      secret: consumerSecret,
+    },
+    signature_method: 'HMAC-SHA256',
+    hash_function(base_string, key) {
+      return crypto.HmacSHA256(base_string, key).toString(crypto.enc.Base64);
+    },
+  });
 
-  console.log('headers', headers);
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: headers,
-      body: { test: 1 }
-    })
-    .then(data => {return data.json()})
-    .then((res) => {console.log('inside', res);})
-    .catch(err => {console.log('inside err',err);})
-
-    res.status(200).json({
-      authHeader: authHeader,
-      response,
-      url
-    })
-  } catch (error) {
-    res.status(200).json({
-      authHeader: authHeader,
-      error,
-      url
-    })
+  const token = {
+    key: tokenId,
+    secret: tokenSecret,
   }
 
+  const requestData = {
+    url: restletUrl,
+    method: 'get',
+  }
 
-});
+  const authHeader = oauth.toHeader(oauth.authorize(requestData, token));
+
+  const headers = {
+    'Authorization': `${authHeader.Authorization}, realm="${accountId}"`,
+    'Content-Type': 'application/json'
+  }
+
+  const options = {
+    headers: headers,
+    method: 'get',
+    url: restletUrl
+
+  };
+
+  const data = await axios(options)
+    .then((response) => {
+      return response;
+    }, (error) => {
+      return error;
+    }).then((val) => console.log('val', val));
+
+  res.status(200).json({ success: true, data: data })
+})
+
 
 router.post('/', async (req, res) => {
   try {
