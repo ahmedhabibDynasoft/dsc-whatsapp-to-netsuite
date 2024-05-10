@@ -88,9 +88,7 @@ router.post('/', async (req, res) => {
         })
         .then((val) => val);
 
-      console.log('data => ', data);
     }
-
 
     res.status(200).json({ success: true })
   }
