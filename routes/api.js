@@ -5,7 +5,7 @@ const { createOauthToken } = require("../util/auth.netsuite");
 const OAuth = require('oauth-1.0a');
 const crypto = require('crypto-js');
 const axios = require('axios');
-
+const {responseHelper}=require('../helper/response_helper')
 router.get('/', async (req, res) => {
   try {
 
@@ -82,7 +82,7 @@ router.post('/', async (req, res) => {
   const tokenSecret = process.env.TOKEN_SECRET;
   const restletUrl = process.env.RESTLET_URL;
   const accountId = process.env.ACCOUNT; // Realm
-
+var filteredResp=responseHelper(req.body)
   const oauth = OAuth({
     consumer: {
       key: consumerKey,
