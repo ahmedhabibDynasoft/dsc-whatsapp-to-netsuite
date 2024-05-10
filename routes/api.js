@@ -74,51 +74,22 @@ router.get('/', async (req, res) => {
 
 
 router.post('/', async (req, res) => {
-
-  const consumerKey = process.env.CONSUMER_KEY; // Client ID
-  const consumerSecret = process.env.CONSUMER_SECRET; // Client Secret
-  const tokenId = process.env.TOKEN_ID;
-  const tokenSecret = process.env.TOKEN_SECRET;
-  const restletUrl = process.env.RESTLET_URL;
-  const accountId = process.env.ACCOUNT; // Realm
-
-  
   try {
-  var filteredResp = responseHelper(req.body)
-  
-  const oauth = OAuth({
-    consumer: {
-      key: consumerKey,
-      secret: consumerSecret,
-    },
-    signature_method: 'HMAC-SHA256',
-    hash_function(base_string, key) {
-      return crypto.HmacSHA256(base_string, key).toString(crypto.enc.Base64);
-    },
-  });
+    var filteredResp = await responseHelper(req.body)
 
-  const token = {
-    key: tokenId,
-    secret: tokenSecret,
-  }
+    const options = await createOAuthRequest('post', filteredResp)
 
-  const requestData = {
-    url: restletUrl,
-    method: 'get',
-  }
-    // const body = req.body;
-    // const options = await createOAuthRequest('post', body);
-    // const data = await axios(options)
-    //   .then((response) => {
-    //     return response;
-    //   }, (error) => {
-    //     return error;
-    //   }).then((val) => val);
+    const data = await axios(options)
+      .then((response) => {
+        return response;
+      }, (error) => {
+        return error;
+      })
+      .then((val) => val);
 
 
-    // console.log('data => ', data);
+    console.log('data => ', data);
 
-    console.log('body', JSON.stringify(filteredResp));
     res.status(200).json({ success: true })
   }
   catch (err) {

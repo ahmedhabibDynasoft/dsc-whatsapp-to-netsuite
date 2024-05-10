@@ -1,4 +1,5 @@
-var CryptoJS = require("crypto-js");
+const OAuth = require('oauth-1.0a');
+const crypto = require('crypto-js');
 
 const createOAuthRequest = async (method, data ) => {
     const consumerKey = process.env.CONSUMER_KEY; // Client ID
