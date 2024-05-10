@@ -1,40 +1,4 @@
-let body = {
-    "object": "whatsapp_business_account",
-    "entry": [{
-        "id": "110894171826159",
-        "changes": [{
-            "value": {
-                "messaging_product": "whatsapp",
-                "metadata": {
-                    "display_phone_number": "15550625257",
-                    "phone_number_id": "104529472471761"
-                },
-                "contacts": [{
-                    "profile": {
-                        "name": "Ahmed9"
-                    },
-                    "wa_id": "923312208885"
-                }],
-                "messages": [{
-                    "context": {
-                        "from": "15550625257",
-                        "id": "wamid.HBgMOTIzMzEyMjA4ODg1FQIAERgSRjZGNzQ5QjEyOEZEOEY3NTBCAA=="
-                    },
-                    "from": "923312208885",
-                    "id": "wamid.HBgMOTIzMzEyMjA4ODg1FQIAEhgUM0FERTQ5QTg1MTIyMTRCNjFBNTAA",
-                    "timestamp": "1715317164",
-                    "text": {
-                        "body": "Reply message"
-                    },
-                    "type": "text"
-                }]
-            },
-            "field": "messages"
-        }]
-    }]
-}
-
-var response = data => {
+var responseHelper = data => {
     let resp = {
         from: "",
         message_id: "",
@@ -69,5 +33,5 @@ var response = data => {
 
     return resp
 }
-console.log(response(body));
-exports.module = { response }
+
+module.exports = { responseHelper }
