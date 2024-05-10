@@ -4,9 +4,9 @@ const OAuth = require('oauth-1.0a');
 const crypto = require('crypto-js');
 const axios = require('axios');
 
-const {responseHelper}=require('../helper/response_helper')
+const { responseHelper } = require('../helper/response_helper')
 
-const {createOAuthRequest} = require('../util/auth.netsuite')
+const { createOAuthRequest } = require('../util/auth.netsuite')
 
 
 
@@ -81,7 +81,11 @@ router.post('/', async (req, res) => {
   const tokenSecret = process.env.TOKEN_SECRET;
   const restletUrl = process.env.RESTLET_URL;
   const accountId = process.env.ACCOUNT; // Realm
-var filteredResp=responseHelper(req.body)
+
+  
+  try {
+  var filteredResp = responseHelper(req.body)
+  
   const oauth = OAuth({
     consumer: {
       key: consumerKey,
@@ -102,7 +106,6 @@ var filteredResp=responseHelper(req.body)
     url: restletUrl,
     method: 'get',
   }
-  try {
     // const body = req.body;
     // const options = await createOAuthRequest('post', body);
     // const data = await axios(options)
@@ -115,7 +118,7 @@ var filteredResp=responseHelper(req.body)
 
     // console.log('data => ', data);
 
-    console.log('body', JSON.stringify(req.body));
+    console.log('body', JSON.stringify(filteredResp));
     res.status(200).json({ success: true })
   }
   catch (err) {
@@ -124,28 +127,6 @@ var filteredResp=responseHelper(req.body)
 
   }
 
-  const authHeader = oauth.toHeader(oauth.authorize(requestData, token));
-
-  const headers = {
-    'Authorization': `${authHeader.Authorization}, realm="${accountId}"`,
-    'Content-Type': 'application/json'
-  }
-
-  const options = {
-    headers: headers,
-    method: 'get',
-    url: restletUrl
-
-  };
-
-  const data = await axios(options)
-    .then((response) => {
-      return response;
-    }, (error) => {
-      return error;
-    }).then((val) => console.log('val', val));
-
-  res.status(200).json({ success: true, data: data })
 });
 
 module.exports = router;
