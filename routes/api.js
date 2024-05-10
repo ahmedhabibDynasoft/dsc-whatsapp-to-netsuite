@@ -77,18 +77,20 @@ router.post('/', async (req, res) => {
   try {
     var filteredResp = await responseHelper(req.body)
 
-    const options = await createOAuthRequest('post', filteredResp)
+    if (filteredResp.type != 'status') {
+      const options = await createOAuthRequest('post', filteredResp)
 
-    const data = await axios(options)
-      .then((response) => {
-        return response;
-      }, (error) => {
-        return error;
-      })
-      .then((val) => val);
+      const data = await axios(options)
+        .then((response) => {
+          return response;
+        }, (error) => {
+          return error;
+        })
+        .then((val) => val);
 
+      console.log('data => ', data);
+    }
 
-    console.log('data => ', data);
 
     res.status(200).json({ success: true })
   }
