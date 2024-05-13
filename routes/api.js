@@ -88,6 +88,9 @@ router.post('/', async (req, res) => {
         })
         .then((val) => val);
 
+      if (data?.data?.statusCode == 200 && data.data.sendMessage) {
+        sendWhatsappMessage(data.data.from, data.data.message);
+      }
     }
 
     res.status(200).json({ success: true })
