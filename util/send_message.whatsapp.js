@@ -3,10 +3,12 @@ const axios = require('axios');
 const sendWhatsappMessage = async (recipient, message) => {
    try {
       const url = process.env.WHATSAPP_URL;
+      const token = process.env.WHATSAPP_ACCESS_TOKEN
 
-      const headers = new Headers();
-      headers.append('Content-Type', 'application/json');
-      headers.append('Authorization', 'Bearer ' + process.env.WHATSAPP_ACCESS_TOKEN);
+      const headers = {
+         'Authorization': `Bearer ${token}`,
+         'Content-Type': 'application/json'
+     }
 
       const body = {
          "messaging_product": "whatsapp",
@@ -19,7 +21,7 @@ const sendWhatsappMessage = async (recipient, message) => {
          }
       }
 
-      const response = await axios({
+      const data = await axios({
          headers: headers,
          method: 'post',
          url: url,

@@ -7,6 +7,7 @@ const axios = require('axios');
 const { responseHelper } = require('../helper/response_helper')
 
 const { createOAuthRequest } = require('../util/auth.netsuite')
+const { sendWhatsappMessage } = require('../util/send_message.whatsapp')
 
 
 
